@@ -1,5 +1,3 @@
-# auto_register: false
-
 module Cafe
   module View
     class Context

@@ -1,5 +1,3 @@
-# auto_register: false
-
 require "slim"
 require "dry-view"
 require "cafe/container"

@@ -1,5 +1,3 @@
-# auto_register: false
-
 require "dry/transaction/operation"
 
 module Cafe

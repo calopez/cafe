@@ -1,5 +1,3 @@
-# auto_register: false
-
 require "rom-repository"
 require "cafe/container"
 require "cafe/import"
