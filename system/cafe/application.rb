@@ -10,17 +10,36 @@ module Cafe
 
     opts[:root] = Pathname(__FILE__).join("../..").realpath.dirname
 
-    use Rack::Session::Cookie, key: "cafe.session", secret: self["settings"].session_secret
+    plugin :rodauth, :json => :only do
+      enable :jwt, :create_account, :login, :logout
+      enable :session_expiration
+      # enable :otp
+      db Container['persistence.db']
 
-    plugin :csrf, raise: true
-    plugin :flash
-    plugin :dry_view
+      # ---------------------------
+      # OTP
+      # ---------------------------
+
+      # ---------------------------
+      # JWT Feature
+      # ---------------------------
+
+      jwt_secret Container['settings'].session_secret
+      use_jwt? true
+
+      # ---------------------------
+      # Session Expiration Feature
+      # ---------------------------
+      session_expiration_default false
+      session_inactivity_timeout 240
+
+    end
 
     route do |r|
       r.multi_route
 
       r.root do
-        r.view "welcome"
+        'welcome :D'
       end
     end
 

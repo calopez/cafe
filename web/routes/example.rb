@@ -3,6 +3,6 @@
 class Cafe::Application
   route 'example' do |r|
     # Routes go here
-    'jejejej nice..'
+    'Hi there...'
   end
 end

@@ -34,12 +34,15 @@ def postgres_env_vars(uri)
 end
 
 namespace :db do
+
+  # Cafe::Container.start(:rom)
+
   task :setup do
-    Cafe::Container.boot :rom
+    Cafe::Container.start :rom
   end
 
   task :settings do
-    Cafe::Container.boot :settings
+    Cafe::Container.start :settings
   end
 
   desc "Print current database schema version"
@@ -58,7 +61,10 @@ namespace :db do
   task create: :settings do
     if system("which createdb", out: File::NULL)
       uri = database_uri
-      system(postgres_env_vars(uri), "createdb #{Shellwords.escape(uri.path[1..-1])}")
+      dbname = Shellwords.escape(uri.path[1..-1])
+      system(postgres_env_vars(uri), "createdb #{dbname}")
+      # TODO: this probably will need read password from settings
+      system("psql -U postgres -c \"CREATE EXTENSION citext\" #{dbname}")
     else
       puts "You must have Postgres installed to create a database"
       exit 1
